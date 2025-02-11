@@ -1,0 +1,1816 @@
+\documentclass[12pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{DeepFake}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+\setcounter{tocdepth}{3}
+\begin{document}
+\begin{titlepage}
+    \centering
+  
+    {\Huge\bfseries DeepFake Detection \\[1cm]} 
+ 
+    {\Huge Fine-tuning Pretrained Networks to Identify the Best Model for Distinguishing Real and Fake Faces \\[2cm]} 
+    
+    \includegraphics[width=0.5\textwidth]{liotru.png} \\[1cm] 
+    
+ 
+    {\huge\textbf{Giuseppe Leonardi}} \\[0.5cm]
+    {\Large 1000065630} \\[0.5cm]
+    {\Large Data Science - UNICT} \\[1.5cm] 
+    
+    
+    \vfill
+\end{titlepage}
+
+
+    \tableofcontents
+    \newpage
+\section{Introduction}\label{introduction}
+
+    The goal of this project is to build and evaluate a system capable of
+\textbf{distinguishing} between real and deep fake faces using
+pre-trained neural networks. This system is intended to provide a robust
+approach to identifying AI-generated images, which is crucial given the
+growing prevalence of deep fake technologies.
+
+Deep fake images and videos have raised concerns across various domains,
+including cybersecurity, media authenticity, and personal privacy. The
+development of reliable detection techniques is essential to mitigate
+their misuse. This project explores the performance of pre-trained
+models such as \emph{ResNet}, \emph{EfficientNet}, \emph{DenseNet} and
+\emph{Vision Transformer} (ViT) for this task.
+
+The dataset used in this project contains images of real faces and deep
+fake faces, organized into two main categories:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Real Faces}: These images are stored in folders prefixed with
+  ``0-''.
+\item
+  \textbf{DeepFake Faces}: These images are stored in folders prefixed
+  with ``1-''.
+\end{enumerate}
+
+Each image represents a human face, with the deep fake images generated
+using advanced artificial intelligence techniques such as StyleGAN or
+StyleGAN2, which are widely used for generating synthetic facial images.
+The real face images come from publicly available high-quality datasets
+containing photographs of authentic human faces.
+
+    After mounting Google Drive on Colab to seamlessly access the dataset
+without overloading Colab's memory, I extracted the zip files containing
+the images, organized based on their creation method. I structured the
+dataset into two main folders: \emph{Real} and \emph{Fake}.
+
+Before diving into data preprocessing, I explored an intriguing step:
+transitioning these images from the spatial domain to the frequency
+domain using the two-dimensional Fourier transform. This approach
+allowed me to investigate whether images generated by certain models
+exhibit recurring patterns or atypical structures.
+
+To achieve this, I transformed each image into its frequency domain
+representation, calculated the average frequency spectrum for each
+folder, and then computed the overall averages for both Real and Deep
+Fake images. This analysis serves as a foundation to uncover unique
+traits within each category.
+
+Further details will be discussed in the next section.
+
+    \subsection{Fourier Spectra of the
+Images}\label{fourier-spectra-of-the-images}
+
+    In the context of analyzing images, the \textbf{spatial domain} alone
+may not reveal subtle differences. Generative models like GANs often
+produce images that visually resemble real ones but exhibit
+\emph{distinctive patterns} in their underlying frequency distributions.
+
+The Fourier Transform provides a way to examine these frequency
+characteristics. By converting images from the spatial domain to the
+\textbf{frequency domain}, we can uncover artifacts introduced by
+generative models, differences in energy distribution, insights into the
+generative process.
+
+This makes Fourier analysis a powerful tool for understanding and
+comparing the properties of real and fake images beyond their
+appearance, making it an essential choice for this study.
+
+The 2D Fourier Transform is a fundamental tool for analyzing the spatial
+frequencies of an image. When applied to an image:
+
+\begin{itemize}
+\item
+  \textbf{Low frequencies} (\emph{near the center of the spectrum}):
+  correspond to slow variations (large structures or smooth gradients).
+\item
+  \textbf{High frequencies} (\emph{near the edges of the spectrum}):
+  correspond to fine details or rapid variations (textures or sharp
+  edges).
+\end{itemize}
+
+The result of the transform is an amplitude spectrum, representing the
+energy of the spatial frequencies present in the image. In the
+visualization the bright central region represents the dominance of low
+frequencies (typical in natural images). Regular or symmetric patterns
+indicate artifacts, often associated with synthetic images.
+
+The Fourier Transform is particularly useful for analyzing differences
+between real and artificially generated images. Generative models, such
+as GANs (Generative Adversarial Networks), often introduce artifacts at
+specific frequencies, which can be identified in the spectrum.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{show\PYZus{}fourier}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{31}{}
+    
+    \begin{center}
+    \adjustimage{max size={0.8\linewidth}{0.8\paperheight}}{DeepFake_files/DeepFake_6_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    Now, let's delve into the results obtained:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Real Images} (\emph{CelebA, FFHQ}): The spectra exhibit a
+  \textbf{dominant central peak} with a gradual decay toward higher
+  frequencies. These spectra are typical of natural images, where low
+  frequencies dominate due to the spatial coherence of structures.
+  \textbf{No periodic or symmetric patterns are observed}, indicating
+  the absence of artificial artifacts in the data.
+\item
+  \textbf{Synthetic Images} (\emph{ATTGAN, GDWCT, StarGAN, STYLEGAN}):
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  ATTGAN and GDWCT: Show less pronounced \textbf{regular patterns} but
+  still exhibit some periodic structures, indicating artifacts
+  introduced by the generative process.
+\item
+  StarGAN and STYLEGAN: Display clear \textbf{grid-like patterns} and
+  pronounced symmetries, with visible periodic frequencies.
+\end{itemize}
+
+These artifacts are characteristic of GAN models, which tend to
+introduce unwanted frequencies during the image generation process.
+These patterns may stem from the convolutional operations in the
+generator.
+
+For a more in-depth consultation, I saved the resulting images on Drive,
+ensuring they are readily accessible
+
+    \subsection{Preprocessing}\label{preprocessing}
+
+    The preprocessing steps were carried out to ensure robustness and prevent overfitting. The preprocessing
+steps include:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \emph{Resizing}: The images were resized to a consistent size (224x224
+  pixels), to ensure uniform processing.
+\item
+  \emph{Normalization}: To improve convergence during training, the
+  images were normalized by a normalization standard to match the
+  distribution of training data from pre-trained models, such as
+  subtracting the mean and dividing by the standard deviation of the
+  ImageNet dataset.
+\item
+  \emph{Augmentation}: To increase the variability of the images and
+  enhance model robustness, augmentation techniques were applied,
+  including rotation, translation, horizontal flipping, and brightness
+  adjustments, to generate different versions of the images for
+  training.
+\end{enumerate}
+
+The dataset was divided into three subsets:
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Training Set}: Used to train the deep learning models. About
+  70\% of the images were allocated to training.
+\item
+  \emph{Validation Set}: Used to fine-tune model parameters and prevent
+  overfitting. About 15\% of the images were allocated to validation.
+\item
+  \emph{Test Set}: Used to evaluate the model's generalization
+  capability on unseen data. It will be used at the end of the studies.
+\end{itemize}
+
+This split allows for evaluating the model's effectiveness during and
+after training, ensuring there is no bias and that the model can
+generalize well to new images.
+
+    \section{Methodology}\label{methodology}
+
+    The following pre-trained models were selected for this project due to
+their proven effectiveness in image classification tasks:
+
+\texttt{DenseNet-121}: This model is known for its efficient
+architecture that allows each layer to receive input from all previous
+layers, facilitating better feature reuse and leading to improved
+performance with fewer parameters. The number 121 refers to the number
+of layers in the network, striking a balance between model complexity
+and computational efficiency.
+
+\texttt{ResNet-18}: ResNet (Residual Networks) are designed to combat
+the vanishing gradient problem by using residual connections, allowing
+for very deep networks without a significant loss in performance. The
+``18'' refers to the number of layers in the network, which is the
+smallest version of ResNet, making it ideal for tasks where
+computational resources or training data are limited.
+
+\texttt{EfficientNet-B0}: This model uses a novel compound scaling
+method that scales depth, width, and resolution uniformly, providing
+state-of-the-art accuracy with fewer parameters and lower computational
+cost. EfficientNet has multiple variants (e.g., EfficientNet-B0, B1,
+etc.), with the number indicating the model size. The larger the number,
+the more computationally intensive and accurate the model becomes. For
+this project, the B0 variant was selected based on the available
+resources and required performance.
+
+\texttt{Vision\ Transformer} (\texttt{ViT}): ViT leverages transformer
+architectures, which have demonstrated remarkable performance in vision
+tasks by processing image patches as sequences, similar to how text is
+processed in NLP tasks. This model is known for its scalability and
+performance on large datasets.
+
+These models were selected for their ability to generalize well on image
+classification tasks, as well as their diverse architectural
+characteristics, which help explore different approaches to the problem.
+
+    \section{Training Process}\label{training-process}
+
+The training process was designed to ensure efficient model learning
+while preventing overfitting and handling limited GPU memory. The
+following key steps were implemented.
+
+    \subsection{Training Setup}\label{training-setup}
+
+    Loss Function (Criterion): The CrossEntropyLoss was used as the
+criterion to evaluate the model's performance during training and
+validation. This loss function is commonly used for multi-class
+classification tasks, which aligns with the binary classification
+problem of distinguishing real and deep fake faces.
+
+Optimizer: The Adam optimizer was chosen due to its adaptive learning
+rate capabilities, which help in faster convergence and stability during
+training. The learning rate was set to 1e-4, a commonly used value for
+fine-tuning pre-trained models.
+
+Learning Rate Scheduler: The ReduceLROnPlateau scheduler was implemented
+to reduce the learning rate if the validation loss plateaus, helping to
+refine the model's training by providing smaller updates when necessary.
+This helps avoid overshooting the optimal weights as the model
+approaches convergence.
+
+    \subsection{Training Loop}\label{training-loop}
+
+    The train\_one\_epoch function handles the training for each epoch. For
+each batch of images, the model performs the following steps:
+
+Forward Pass: The input images are passed through the model to generate
+predictions.
+
+Loss Calculation: The model's predictions are compared with the true
+labels using CrossEntropyLoss, which is computed for the batch.
+
+Gradient Accumulation: To simulate larger batch sizes while maintaining
+memory efficiency, the loss is divided by the accumulation\_steps (set
+to 4 in this case). Gradients are accumulated over several mini-batches,
+and the model's weights are updated only after accumulating gradients
+for accumulation\_steps mini-batches.
+
+Accuracy Tracking: The training accuracy is calculated by comparing the
+model's predictions with the true labels. 
+
+The validate\_one\_epoch\_with\_preds function is used for validating the
+model at the end of each epoch:
+
+Forward Pass: Like the training phase, the model generates predictions
+for the validation dataset.
+
+Loss and Accuracy Calculation: The loss and accuracy are computed for
+the entire validation set.
+
+Metrics Tracking: The true labels and predicted labels are stored to
+calculate additional evaluation metrics (precision, recall, F1-score).
+
+    \subsection{Evaluation Metrics}\label{evaluation-metrics}
+
+    To monitor the model's performance during training, the following
+metrics were computed:
+
+Accuracy: Measures the percentage of correct predictions in both
+training and validation sets.
+
+Precision, Recall, and F1-Score: These metrics are calculated for the
+validation set to assess the classifier's ability to correctly identify
+real and deep fake faces, considering both false positives and false
+negatives.
+
+Confusion Matrix: The confusion matrix was computed at the end of each
+epoch, providing a clear visualization of the model's classification
+performance, including true positives, false positives, true negatives,
+and false negatives.
+
+    \subsection{Optimization Techniques}\label{optimization-techniques}
+
+    To improve model training, the following techniques were employed:
+
+Early Stopping: To prevent overfitting and unnecessary computation,
+early stopping was implemented. If the validation loss does not improve
+after a specified number of epochs (set to patience=3), training stops
+early.
+
+Batch Accumulation: Given the constraints on GPU memory, batch
+accumulation was used to simulate larger batch sizes. This technique
+allows for more effective weight updates without exceeding memory
+limits, enabling the use of deeper and more complex models.
+
+    \subsection{Model Evaluation and Saving
+Results}\label{model-evaluation-and-saving-results}
+
+    Best Model Selection: The model with the lowest validation loss was
+saved as the best model. If the validation loss improved during an
+epoch, the results (precision, recall, F1-score, and confusion matrix)
+were updated.
+
+Confusion Matrix Visualization: At the end of training, a heatmap of the
+confusion matrix was generated, providing insights into the model's
+classification performance across different classes (real vs.~fake
+faces).
+
+Results Storage: All the results (training and validation losses,
+accuracies, and metrics for each epoch) were stored in a CSV file for
+further analysis and visualization.
+
+    \section{The Training}\label{the-training}
+
+    Now, let's start to train each one of the choosen models, all of them
+with all frozen layers, except for the last one, the Classifier.
+
+    \subsection{ResNet-18}\label{resnet-18}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{performance}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ResNet\PYZhy{}18}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_26_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_26_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_26_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The model shows promising results overall, but there are areas where we
+could see improvement.
+
+The \textbf{training loss} is relatively low at \texttt{0.1441},
+suggesting that the model has learned well from the training data.
+However, the higher \textbf{validation loss} compared to the training
+loss points to a potential issue of overfitting. This means that while
+the model performs well on the training set, it might not generalize as
+well to the validation set.
+
+Looking at the training and validation accuracy, both values are fairly
+close to each other, which is a positive sign, indicating that the model
+is not significantly overfitting. The \textbf{training accuracy} of
+\texttt{71.31\%} and \textbf{validation accuracy} of \texttt{72.25\%}
+are both respectable, but there's still room to increase performance.
+
+\textbf{Precision} stands at \texttt{68.85\%}, meaning that when the
+model predicts a positive class, it is correct nearly 69\% of the time.
+The \textbf{Recall} indicate that the model is identifying \texttt{70\%}
+of the true positive cases. The F1 score is a combination of these two
+metrics and reflects a good but improvable balance between them.
+
+In terms of the \textbf{confusion matrix}, the model has correctly
+classified \texttt{163\ true\ negatives} and
+\texttt{126\ true\ positives}, which is good. However, there are some
+errors: \texttt{57\ false\ positives} and \texttt{54\ false\ negatives}.
+These errors could be minimized with model tuning, better feature
+engineering, or even more training data.
+
+    \subsection{EfficientNet}\label{efficientnet}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{performance}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{EfficientNet}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_29_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_29_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_29_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The EfficientNet model demonstrates solid performance but leaves room
+for improvement in some areas.
+
+The \textbf{training loss} is relatively low at \texttt{0.1306},
+indicating that the model has effectively learned patterns from the
+training data. However, the higher \textbf{validation loss} of
+\texttt{0.5223} suggests that the model may be struggling to generalize
+to unseen data, which could be an indicator of mild overfitting.
+
+When comparing the \textbf{training accuracy} of \texttt{80.87\%} with
+the \textbf{validation accuracy} of \texttt{80.25\%}, the two values are
+quite close. This consistency is a positive sign, as it implies that the
+model is not significantly overfitting.
+
+Looking deeper into the precision, recall, and F1 score:
+
+\textbf{Precision} (\texttt{76.72\%}) shows that when the model predicts
+a positive class, it is correct nearly 77\% of the time. \textbf{Recall}
+(\texttt{80.56\%}) highlights that the model is successfully identifying
+over 80\% of the true positive cases. The \textbf{F1 score}
+(\texttt{78.59\%}) reflects a strong balance between precision and
+recall, which is encouraging.
+
+From the confusion matrix, we can see that the model correctly
+classified:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  176 true negatives;
+\item
+  145 true positives;
+\end{enumerate}
+
+However, there are notable errors that suggest potential areas for
+improvement. For instance, reducing false negatives would boost recall,
+while minimizing false positives would improve precision.
+
+Overall, EfficientNet shows promise with good generalization, but there
+is still scope for optimization to achieve higher performance.
+
+    \subsection{DenseNet-121}\label{densenet-121}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{41}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{performance}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{DenseNet121}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_32_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_32_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_32_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The \textbf{training loss} is relatively low at \texttt{0.1325}, which
+indicates that the model has successfully learned patterns from the
+training data. However, the \textbf{validation loss} of \texttt{0.5293}
+is higher, suggesting that the model might be struggling to generalize
+to new, unseen data. This discrepancy between the training and
+validation losses could point to mild overfitting.
+
+When comparing the \textbf{training accuracy} of \texttt{79.75\%} and
+the validation accuracy of \texttt{80.75\%}, the close proximity between
+the two values suggests that the model is not severely overfitting. This
+is a positive sign, as it indicates that the model performs similarly on
+both the training and validation sets.
+
+Looking at precision, recall, and F1 score:
+
+\textbf{Precision} (\texttt{78.30\%}) tells us that when the model
+predicts a positive class (fake face), it is correct \texttt{78.30\%} of
+the time. This is a good result, but there is still room for improvement
+to reduce false positives (real faces misclassified as fake).
+
+\textbf{Recall} (\texttt{84.26\%}) indicates that the model successfully
+identifies 84.26\% of the true positives (fake faces). This is a strong
+result, but further improvement could be made by reducing false
+negatives (fake faces misclassified as real).
+
+The \textbf{F1 score} (\texttt{81.17\%}) reflects a strong balance
+between precision and recall, indicating that the model has achieved a
+solid trade-off between these two metrics.
+
+In summary, DenseNet-121 shows good generalization with a strong ability
+to identify fake faces. However, there is still potential for
+improvement, particularly in reducing misclassifications, such as false
+positives and false negatives, to boost both precision and recall.
+Further optimization can lead to better performance.
+
+    \subsection{ViT}\label{vit}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{43}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{performance}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Vit}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_35_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_35_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_35_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The ViT (Vision Transformer) model shows promising results with room for
+further improvement in some areas.
+
+The \textbf{training loss} starts at \texttt{0.1851} and decreases to
+\texttt{0.1231} by epoch 20, suggesting that the model effectively
+learns patterns from the training data. However, the** validation loss**
+remains higher, starting at \texttt{0.7129} and dropping to
+\texttt{0.5204} by epoch 20. While the model's validation loss decreases
+over time, it's still higher than the training loss, indicating some
+level of overfitting. The model may be performing well on the training
+data but struggling to generalize to unseen data.
+
+When we look at the \textbf{training accuracy}, it increases from
+\texttt{51.56\%} in the first epoch to \texttt{76.81\%} in the final
+epoch, demonstrating an improvement in the model's ability to correctly
+classify the training set. Similarly, the \textbf{validation accuracy}
+starts at \texttt{55\%} and rises to \texttt{75.25\%} by epoch 20,
+showing a consistent improvement.
+
+\textbf{Precision} indicates that when the model predicts a positive
+class (fake face), it is correct \texttt{75\%} of the time. The
+\textbf{Recall} highlights that the model identifies \texttt{74.62\%} of
+the true positives (fake faces). Although recall is relatively high,
+further improvements could still reduce the number of false negatives
+(fake faces misclassified as real). \textbf{F1 score} (\texttt{74.81\%})
+represents a balanced performance between precision and recall,
+indicating the model's strength in both correctly identifying fake faces
+and minimizing misclassifications.
+
+Looking at the \textbf{confusion matrix}, The presence of errors
+suggests areas where the model could be further optimized, specifically
+by reducing false positives to improve precision and false negatives to
+enhance recall.
+
+In summary, the ViT model performs well with solid generalization across
+training and validation sets. While precision, recall, and F1 score are
+strong, there is still potential to reduce misclassifications,
+especially false positives and false negatives, through further tuning
+and optimization.
+
+    \subsection{The Choice}\label{the-choice}
+
+    Now, compare each model to others to choose of them:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{44}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model\PYZus{}names} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ResNet\PYZhy{}18}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EfficientNet}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DenseNet121}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Vit}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{recap}\PY{p}{(}\PY{n}{model\PYZus{}names}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_39_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \textbf{\emph{EfficientNet}} stands out as an excellent choice,
+combining high performance with lightweight efficiency. With a
+\textbf{validation accuracy} of \texttt{80.25\%} and an \textbf{F1
+score} of \texttt{78.59\%}, it demonstrates an excellent balance between
+precision and recall while remaining a lighter model, ideal for
+resource-constrained applications.
+
+Its slightly higher \textbf{precision} (\texttt{76.72\%}) compared to
+\textbf{DenseNet121} (\texttt{78.30\%}) makes it particularly suitable
+for reducing false positives, which is critical in tasks like detecting
+fake faces where minimizing errors is essential. Additionally, the
+lowest \textbf{validation loss} (\texttt{0.5223}) among the models
+indicates that \textbf{EfficientNet} generalizes better on the
+validation dataset.
+
+While \textbf{DenseNet121} offers a slight edge in recall
+(\texttt{84.26\%} vs.~\texttt{80.56\%}), its higher computational cost
+makes it less practical for environments with limited hardware resources
+or where speed is a key factor. Compared to \textbf{ResNet-18} and
+\textbf{ViT}, \textbf{\emph{EfficientNet}} clearly outperforms both in
+accuracy and F1 score, making it the ideal compromise between
+performance and efficiency.
+
+In summary, \textbf{\emph{EfficientNet}} represents the most balanced
+solution when looking for an efficient yet high-performing model. For
+applications requiring a lightweight implementation without sacrificing
+too much in terms of accuracy and overall performance, EfficientNet is
+the best choice.
+
+    \section{EfficientNet\_2 (After Unlocking
+Layers)}\label{efficientnet_2-after-unlocking-layers}
+
+    Since EfficientNet has demonstrated commendable results when applied to
+our dataset, the next logical step is to unfreeze additional layers
+preceding the classifier. This approach allows us to fine-tune the
+weights in these layers, which could potentially lead to improved
+performance. Specifically, I have unfrozen the last two layers of the
+features block, which is responsible for extracting high-level
+representations from the input data through a series of convolutional
+and pooling operations. By fine-tuning these layers, we aim to enhance
+the model's ability to capture more nuanced patterns in the data.
+
+I would also like to highlight that, while a scheduler has been declared
+in the function, it is not yet being used. Its inclusion was a strategic
+choice for scalability, ensuring a smoother implementation in future
+training phases if needed.
+
+Now, let's start with the traing and see the results.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{45}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{effnet2} \PY{o}{=} \PY{n}{efficientnet\PYZus{}b0}\PY{p}{(}\PY{n}{weights}\PY{o}{=}\PY{n}{EfficientNet\PYZus{}B0\PYZus{}Weights}\PY{o}{.}\PY{n}{DEFAULT}\PY{p}{)}
+\PY{n}{effnet2}\PY{o}{.}\PY{n}{classifier} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Linear}\PY{p}{(}\PY{n}{effnet2}\PY{o}{.}\PY{n}{classifier}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{in\PYZus{}features}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{param} \PY{o+ow}{in} \PY{n}{effnet2}\PY{o}{.}\PY{n}{parameters}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{param}\PY{o}{.}\PY{n}{requires\PYZus{}grad} \PY{o}{=} \PY{k+kc}{False}
+
+\PY{k}{for} \PY{n}{param} \PY{o+ow}{in} \PY{n}{effnet2}\PY{o}{.}\PY{n}{classifier}\PY{o}{.}\PY{n}{parameters}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{param}\PY{o}{.}\PY{n}{requires\PYZus{}grad} \PY{o}{=} \PY{k+kc}{True}
+
+\PY{k}{for} \PY{n}{layer} \PY{o+ow}{in} \PY{n}{effnet2}\PY{o}{.}\PY{n}{features}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{:}\PY{p}{]}\PY{p}{:}
+    \PY{k}{for} \PY{n}{param} \PY{o+ow}{in} \PY{n}{layer}\PY{o}{.}\PY{n}{parameters}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{n}{param}\PY{o}{.}\PY{n}{requires\PYZus{}grad} \PY{o}{=} \PY{k+kc}{True}
+
+\PY{c+c1}{\PYZsh{}Execute Training}
+\PY{n}{criterion}\PY{p}{,} \PY{n}{optimizer}\PY{p}{,} \PY{n}{scheduler} \PY{o}{=} \PY{n}{setup\PYZus{}training}\PY{p}{(}\PY{n}{effnet2}\PY{p}{)}
+
+\PY{n}{effnet\PYZus{}2Train} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{effnet2}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{EfficientNet\PYZus{}2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{criterion}\PY{p}{,} \PY{n}{optimizer}\PY{p}{,} \PY{n}{train\PYZus{}loader}\PY{o}{=}\PY{n}{train\PYZus{}loader}\PY{p}{,} \PY{n}{val\PYZus{}loader}\PY{o}{=}\PY{n}{val\PYZus{}loader}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Model 'EfficientNet\_2' already exists in
+/content/drive/MyDrive/deepfake\_dataset/models/EfficientNet\_2. Training skipped.
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{46}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{performance}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{EfficientNet\PYZus{}2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_44_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_44_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_44_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    After unlocking two additional levels of EfficientNet, the model's
+performance has shown significant improvement, demonstrating its
+capacity to generalize better and deliver more accurate predictions.
+Let's analyze the updated results in detail.
+
+The \textbf{training loss} has dropped to an impressive \texttt{0.0166},
+while the \textbf{validation loss} has decreased to \texttt{0.1596}.
+This reduction from the initial training suggests that the extended
+training with additional layers has allowed the model to better learn
+from the data while maintaining a strong ability to generalize. The gap
+between training and validation loss is minimal, indicating that the
+overfitting observed earlier has been effectively mitigated.
+
+The \textbf{training accuracy} has reached a near-perfect level at
+\texttt{98.5\%}, which is an excellent result. The validation accuracy,
+now at \texttt{92.5\%}, reflects significant improvement compared to the
+previous \texttt{80.25\%}. The small gap between training and validation
+accuracy highlights the model's robustness and ability to generalize
+effectively.
+
+This leap in accuracy signifies that the model is now capable of
+distinguishing between real and fake faces with greater precision. The
+higher capacity layers in EfficientNet have likely enabled the model to
+capture subtle patterns and variations in the dataset.
+
+The \textbf{F1 score}, a balanced metric, now stands at
+\texttt{92.57\%}, up from \texttt{78.59\%}. This improvement highlights
+a better equilibrium between precision and recall, demonstrating overall
+reliability and performance. The \textbf{confusion matrix} reflects the
+strides made by the model and the errors have been significantly
+minimized compared to the initial results, suggesting that the
+additional layers have enhanced the model's feature extraction and
+discrimination capabilities.
+
+While the results are highly promising, \emph{there is always room for
+further optimization}: in fact, the next step is to try
+``\textbf{Fine-Tuning Hyperparameters}'' and to be precise I wanna use a
+scheduler to adapt the learning rate during the training.
+
+So, EfficientNet has demonstrated its power, and with these unlocked
+levels, it has set a solid benchmark for the task of distinguishing real
+from fake faces. This progress is highly encouraging, and further
+fine-tuning may lead to near-perfect results.
+
+    \section{EfficientNet\_3 (With Plateau
+Scheduler)}\label{efficientnet_3-with-plateau-scheduler}
+
+    A Scheduler is a method to adjust the learning rate during training.
+
+Schedulers are used to speed up training and improve convergence,
+adapting the learning rate in various ways, either based on the epoch
+count or based on the model's performance, like the one i've choose for
+this case.
+
+I'm using \textbf{ReduceLROnPlateau}, a dynamic learning rate scheduler
+in PyTorch that adjusts the learning rate based on the performance of a
+monitored metric. The scheduler is linked to the optimizer and monitores
+a metric that should decrease (the \textbf{validation loss}). If the
+metric stops decreasing, it reduces the learning rate.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{47}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{effnet3} \PY{o}{=} \PY{n}{efficientnet\PYZus{}b0}\PY{p}{(}\PY{n}{weights}\PY{o}{=}\PY{n}{EfficientNet\PYZus{}B0\PYZus{}Weights}\PY{o}{.}\PY{n}{DEFAULT}\PY{p}{)}
+\PY{n}{effnet3}\PY{o}{.}\PY{n}{classifier} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Linear}\PY{p}{(}\PY{n}{effnet3}\PY{o}{.}\PY{n}{classifier}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{in\PYZus{}features}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{param} \PY{o+ow}{in} \PY{n}{effnet3}\PY{o}{.}\PY{n}{parameters}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{param}\PY{o}{.}\PY{n}{requires\PYZus{}grad} \PY{o}{=} \PY{k+kc}{False}
+
+\PY{k}{for} \PY{n}{param} \PY{o+ow}{in} \PY{n}{effnet3}\PY{o}{.}\PY{n}{classifier}\PY{o}{.}\PY{n}{parameters}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{param}\PY{o}{.}\PY{n}{requires\PYZus{}grad} \PY{o}{=} \PY{k+kc}{True}
+
+\PY{k}{for} \PY{n}{layer} \PY{o+ow}{in} \PY{n}{effnet3}\PY{o}{.}\PY{n}{features}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{:}\PY{p}{]}\PY{p}{:}
+    \PY{k}{for} \PY{n}{param} \PY{o+ow}{in} \PY{n}{layer}\PY{o}{.}\PY{n}{parameters}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{n}{param}\PY{o}{.}\PY{n}{requires\PYZus{}grad} \PY{o}{=} \PY{k+kc}{True}
+
+\PY{c+c1}{\PYZsh{}Execute Training}
+\PY{n}{criterion}\PY{p}{,} \PY{n}{optimizer}\PY{p}{,} \PY{n}{scheduler} \PY{o}{=} \PY{n}{setup\PYZus{}training}\PY{p}{(}\PY{n}{effnet3}\PY{p}{)}
+
+\PY{n}{effnet\PYZus{}3Train} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{effnet3}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{EfficientNet\PYZus{}3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{criterion}\PY{p}{,} \PY{n}{optimizer}\PY{p}{,} \PY{n}{train\PYZus{}loader}\PY{o}{=}\PY{n}{train\PYZus{}loader}\PY{p}{,} \PY{n}{val\PYZus{}loader}\PY{o}{=}\PY{n}{val\PYZus{}loader}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Model 'EfficientNet\_3' already exists in
+/content/drive/MyDrive/deepfake\_dataset/models/EfficientNet\_3. Training skipped.
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{48}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{performance}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{EfficientNet\PYZus{}3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_49_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_49_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_49_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The introduction of the Reduce on Plateau scheduler doesn't appears to have been
+a beneficial adjustment. While the training accuracy (98.12\%) is
+slightly lower than that of EfficientNet\_2 (98.5\%), the validation
+accuracy has improved to 93\%, alongside an increase in the F1 Score to
+0.9364. This suggests that the scheduler helped the model generalize
+better by dynamically adjusting the learning rate, particularly during
+stagnation in performance.
+
+The most notable improvement is in the Recall, which increased
+significantly from 0.935 to 0.9671. This indicates that the model is now
+more effective at correctly identifying positive cases, a critical
+improvement depending on the task's objectives.
+
+While the differences in metrics are subtle, this version demonstrates
+improved robustness and stability, making it a strong candidate if
+minimizing overfitting and maximizing positive detection is a priority.
+However, the choice between this version and EfficientNet\_2 ultimately
+depends on whether the incremental gains justify the added complexity of
+using the scheduler.
+
+    \section{Predictions}\label{predictions}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{49}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model\PYZus{}names} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EfficientNet}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EfficientNet\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EfficientNet\PYZus{}3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{recap}\PY{p}{(}\PY{n}{model\PYZus{}names}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_52_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Both \emph{EfficientNet\_2} and \emph{EfficientNet\_3} show substantial
+improvements over the base model, with the additional layers and the plateau scheduler that have
+clearly enhanced the model's learning ability, resulting in:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  A substantial reduction in both training and validation loss.
+\item
+  A significant increase in training and validation accuracy.
+\item
+  Stronger precision, recall, and F1 score, indicating that the model is
+  more reliable in distinguishing between real and fake faces.
+\end{enumerate}
+
+These improvements set EfficientNet\_3 as the best version for the task,
+with its ability to generalize effectively and deliver high-quality
+predictions. Fine-tuning and further optimizations could push
+performance even further, but these results are already highly
+promising.
+
+What we will do now is test the behavior of the EfficientNet\_3 model on
+the test set, which consists of a series of images whose origin (and
+therefore their classification) is unknown to us. This will allow us to
+evaluate how well our model performs when faced with completely unseen
+data.
+
+    \subsection{Test Set}\label{test-set}
+
+    Now, all that's left is to load the test set, load the model weights and
+structure, and finally start the training. For simplicity, the first six
+images and their classifications will be displayed. For more details,
+please refer to the CSV file containing all the predictions.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{70}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{classified}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_56_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \section{Conclusions}\label{conclusions}
+
+    The results obtained using the EfficientNet\_3 model on the test set
+demonstrate promising performance, with strong indicators of its ability
+to distinguish between real and fake faces.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{76}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{final\PYZus{}result}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{DeepFake_files/DeepFake_59_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Accuracy} (\texttt{0.80}): The model achieved an impressive
+  accuracy of 80\%, correctly classifying a large proportion of the test
+  set. This shows the model's general effectiveness in distinguishing
+  real from fake faces, ensuring high reliability in the results.
+\item
+  \textbf{Precision} (\texttt{0.8613}): The model achieved a high
+  precision of 80\%, meaning that 80\% of the predicted fake faces were
+  indeed fake. This is a positive outcome, demonstrating the model's
+  efficiency in minimizing false positives, where real faces are
+  misclassified as fake.
+\item
+  \textbf{Recall} (\texttt{0.8514}): With a recall of 76.57\%, the model
+  effectively identified the majority of the fake faces. While there is
+  still a small margin for improvement, the model's ability to capture
+  fake faces demonstrates a solid understanding of the problem, ensuring
+  minimal missed detections.
+\item
+  \textbf{F1-score} (\texttt{0.8563}): The F1-score of 0.7637 reflects a
+  well-balanced performance between precision and recall. This indicates
+  that the model maintains an excellent trade-off between these two
+  metrics, providing a robust overall classification capability.
+\end{enumerate}
+
+In terms of \textbf{\emph{future improvements}}, there are several
+directions that could further enhance the performance of the
+EfficientNet\_3 model. One promising approach is to continue the
+\emph{model fine-tuning}. Additionally, the application of
+\emph{ensemble methods} could offer another level of performance. By
+combining multiple models, each contributing its unique strengths, the
+model's overall classification capability could be enhanced, leading to
+more accurate predictions.
+
+In conclusion, while the EfficientNet\_3 model has already shown
+promising results, there is still considerable potential for
+improvement. By focusing on these targeted strategies, the model's
+performance could be further optimized, making it an even more powerful
+tool for DeepFake detection in the future.
+
+    \section{Created Functions}\label{created-functions}
+
+In this section, you will find all the functions personally created by
+me to avoid repeating lines of code endlessly and to simplify the
+workflow.
+
+ATTENTION: MATERIAL RESERVED FOR AUTHORIZED PERSONNEL ONLY.
+
+    \subsection{Fourier}\label{fourier}
+
+I developed a function that iterates through each folder, converting
+each image into its frequency domain using NumPy's
+\texttt{np.fft.fft2()} function. Then, with \texttt{np.mean()} Codice in
+linea, I calculated the average of these image spectra and computed the
+final averages for both real and fake images.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{mean\PYZus{}fourier}\PY{p}{(}\PY{n}{image\PYZus{}folder}\PY{p}{,} \PY{n}{image\PYZus{}format}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*.png}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{resize\PYZus{}dim}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+
+    \PY{n}{image\PYZus{}paths} \PY{o}{=} \PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{image\PYZus{}folder}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{/}\PY{l+s+si}{\PYZob{}}\PY{n}{image\PYZus{}format}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{specter} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+    \PY{k}{for} \PY{n}{path} \PY{o+ow}{in} \PY{n}{image\PYZus{}paths}\PY{p}{:}
+        \PY{n}{img} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{path}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{IMREAD\PYZus{}GRAYSCALE}\PY{p}{)}
+        \PY{k}{if} \PY{n}{img} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+            \PY{k}{continue}  \PY{c+c1}{\PYZsh{} skip if image is none}
+        \PY{c+c1}{\PYZsh{} Resize the image}
+        \PY{k}{if} \PY{n}{resize\PYZus{}dim} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{:}
+            \PY{n}{img} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{resize}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{resize\PYZus{}dim}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Apply the Fourier Transform}
+        \PY{n}{f\PYZus{}transform} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{fft}\PY{o}{.}\PY{n}{fft2}\PY{p}{(}\PY{n}{img}\PY{p}{)}
+        \PY{n}{f\PYZus{}shift} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{fft}\PY{o}{.}\PY{n}{fftshift}\PY{p}{(}\PY{n}{f\PYZus{}transform}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Shift to center}
+        \PY{n}{magnitude\PYZus{}spectrum} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{f\PYZus{}shift}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}log to simply the visualization}
+        \PY{n}{specter}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{magnitude\PYZus{}spectrum}\PY{p}{)}
+
+    \PY{k}{if} \PY{o+ow}{not} \PY{n}{specter}\PY{p}{:}
+        \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{No valid Image to transform!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{}return the mean of each folder}
+    \PY{n}{mean\PYZus{}specter} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{specter}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+    \PY{k}{return} \PY{n}{mean\PYZus{}specter}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{show\PYZus{}fourier}\PY{p}{(}\PY{n}{folder} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{/content/drive/MyDrive/deepfake\PYZus{}dataset/fourier}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{total\PYZus{}filename}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{total.png}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{:}
+    \PY{n}{total\PYZus{}filepath} \PY{o}{=} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{folder}\PY{p}{,} \PY{n}{total\PYZus{}filename}\PY{p}{)}
+
+    \PY{k}{if} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{exists}\PY{p}{(}\PY{n}{total\PYZus{}filepath}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{n}{ipydis}\PY{p}{(}\PY{n}{filename}\PY{o}{=}\PY{n}{total\PYZus{}filepath}\PY{p}{)}
+
+    \PY{n}{fourier\PYZus{}images} \PY{o}{=} \PY{p}{[}
+        \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{input\PYZus{}folder}\PY{p}{,} \PY{n}{file}\PY{p}{)} \PY{k}{for} \PY{n}{file} \PY{o+ow}{in} \PY{n}{os}\PY{o}{.}\PY{n}{listdir}\PY{p}{(}\PY{n}{input\PYZus{}folder}\PY{p}{)}
+        \PY{k}{if} \PY{n}{file}\PY{o}{.}\PY{n}{endswith}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.png}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{p}{]}
+
+    \PY{n}{cols} \PY{o}{=} \PY{l+m+mi}{3}
+    \PY{n}{rows} \PY{o}{=} \PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{fourier\PYZus{}images}\PY{p}{)} \PY{o}{+} \PY{n}{cols} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{/}\PY{o}{/} \PY{n}{cols}
+
+    \PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{rows}\PY{p}{,} \PY{n}{cols}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,} \PY{l+m+mi}{5} \PY{o}{*} \PY{n}{rows}\PY{p}{)}\PY{p}{)}
+    \PY{n}{axes} \PY{o}{=} \PY{n}{axes}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}
+
+    \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{img\PYZus{}path} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{fourier\PYZus{}images}\PY{p}{)}\PY{p}{:}
+        \PY{n}{img\PYZus{}data} \PY{o}{=} \PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path}\PY{p}{)}
+        \PY{n}{axes}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}data}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{viridis}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{axes}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{basename}\PY{p}{(}\PY{n}{img\PYZus{}path}\PY{p}{)}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+        \PY{n}{axes}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{off}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{fourier\PYZus{}images}\PY{p}{)}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{axes}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+        \PY{n}{axes}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{off}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{n}{total\PYZus{}filepath}\PY{p}{,} \PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{,} \PY{n}{bbox\PYZus{}inches}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Combined Fourier image saved: }\PY{l+s+si}{\PYZob{}}\PY{n}{total\PYZus{}filepath}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{To Train}\label{to-train}
+
+Here we have the four functions used to train each model: 1. the
+function to get the criterion and optimizer; 2. two functions that
+handle training the model within a single epoch and evaluating it; 3. A
+total function that loops over the epochs using the two previous
+functions.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}FUNCTION FOR CRITERION \PYZam{} OPTIMIZER (ADAM)}
+\PY{k}{def} \PY{n+nf}{setup\PYZus{}training}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{learning\PYZus{}rate}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}4}\PY{p}{)}\PY{p}{:}
+    \PY{n}{criterion} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{CrossEntropyLoss}\PY{p}{(}\PY{p}{)}
+    \PY{n}{optimizer} \PY{o}{=} \PY{n}{optim}\PY{o}{.}\PY{n}{Adam}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{parameters}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{n}{learning\PYZus{}rate}\PY{p}{)}
+    \PY{n}{scheduler} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{optim}\PY{o}{.}\PY{n}{lr\PYZus{}scheduler}\PY{o}{.}\PY{n}{ReduceLROnPlateau}\PY{p}{(}\PY{n}{optimizer}\PY{p}{,} \PY{n}{mode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{min}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{patience}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{factor}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{criterion}\PY{p}{,} \PY{n}{optimizer}\PY{p}{,} \PY{n}{scheduler}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}TRAINING FUNCTION}
+\PY{k}{def} \PY{n+nf}{train\PYZus{}one\PYZus{}epoch}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{train\PYZus{}loader}\PY{p}{,} \PY{n}{criterion}\PY{p}{,} \PY{n}{optimizer}\PY{p}{,} \PY{n}{device}\PY{p}{,} \PY{n}{accumulation\PYZus{}steps}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{:}
+    \PY{n}{model}\PY{o}{.}\PY{n}{train}\PY{p}{(}\PY{p}{)}  \PY{c+c1}{\PYZsh{}training mode}
+    \PY{n}{train\PYZus{}loss}\PY{p}{,} \PY{n}{train\PYZus{}correct} \PY{o}{=} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mi}{0}
+
+    \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{p}{(}\PY{n}{images}\PY{p}{,} \PY{n}{labels}\PY{p}{)} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{train\PYZus{}loader}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} moves the data to the GPU or CPU}
+        \PY{n}{images}\PY{p}{,} \PY{n}{labels} \PY{o}{=} \PY{n}{images}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}\PY{p}{,} \PY{n}{labels}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} forward pass}
+        \PY{n}{outputs} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{images}\PY{p}{)}
+        \PY{n}{outputs} \PY{o}{=} \PY{n}{outputs}\PY{o}{.}\PY{n}{logits} \PY{k}{if} \PY{n+nb}{hasattr}\PY{p}{(}\PY{n}{outputs}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{logits}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{else} \PY{n}{outputs}
+
+        \PY{n}{loss} \PY{o}{=} \PY{n}{criterion}\PY{p}{(}\PY{n}{outputs}\PY{p}{,} \PY{n}{labels}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} accumulated gradient}
+        \PY{n}{loss} \PY{o}{=} \PY{n}{loss} \PY{o}{/} \PY{n}{accumulation\PYZus{}steps}
+        \PY{n}{loss}\PY{o}{.}\PY{n}{backward}\PY{p}{(}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Update the weights every \PYZsq{}accumulation\PYZus{}steps\PYZsq{} steps}
+        \PY{k}{if} \PY{p}{(}\PY{n}{i} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{\PYZpc{}} \PY{n}{accumulation\PYZus{}steps} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{n}{optimizer}\PY{o}{.}\PY{n}{step}\PY{p}{(}\PY{p}{)}
+            \PY{n}{optimizer}\PY{o}{.}\PY{n}{zero\PYZus{}grad}\PY{p}{(}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Tracking loss and accuracy}
+        \PY{n}{train\PYZus{}loss} \PY{o}{+}\PY{o}{=} \PY{n}{loss}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)} \PY{o}{*} \PY{n}{images}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+        \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{preds} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{outputs}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{train\PYZus{}correct} \PY{o}{+}\PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{preds} \PY{o}{==} \PY{n}{labels}\PY{o}{.}\PY{n}{data}\PY{p}{)}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Loss calculation and average accuracy}
+    \PY{n}{epoch\PYZus{}loss} \PY{o}{=} \PY{n}{train\PYZus{}loss} \PY{o}{/} \PY{n+nb}{len}\PY{p}{(}\PY{n}{train\PYZus{}loader}\PY{o}{.}\PY{n}{dataset}\PY{p}{)}
+    \PY{n}{epoch\PYZus{}acc} \PY{o}{=} \PY{n}{train\PYZus{}correct} \PY{o}{/} \PY{n+nb}{len}\PY{p}{(}\PY{n}{train\PYZus{}loader}\PY{o}{.}\PY{n}{dataset}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{epoch\PYZus{}loss}\PY{p}{,} \PY{n}{epoch\PYZus{}acc}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}VALIDATION FUNCTION}
+\PY{k}{def} \PY{n+nf}{validate\PYZus{}one\PYZus{}epoch}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{val\PYZus{}loader}\PY{p}{,} \PY{n}{criterion}\PY{p}{,} \PY{n}{device}\PY{p}{)}\PY{p}{:}
+    \PY{n}{model}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Validation mode}
+    \PY{n}{val\PYZus{}loss} \PY{o}{=} \PY{l+m+mf}{0.0}
+    \PY{n}{val\PYZus{}correct} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{n}{val\PYZus{}total} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{n}{all\PYZus{}labels} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{all\PYZus{}preds} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+    \PY{k}{with} \PY{n}{torch}\PY{o}{.}\PY{n}{no\PYZus{}grad}\PY{p}{(}\PY{p}{)}\PY{p}{:}  \PY{c+c1}{\PYZsh{} Disable gradient calculation}
+        \PY{k}{for} \PY{n}{images}\PY{p}{,} \PY{n}{labels} \PY{o+ow}{in} \PY{n}{val\PYZus{}loader}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Moves data to the GPU or CPU}
+            \PY{n}{images}\PY{p}{,} \PY{n}{labels} \PY{o}{=} \PY{n}{images}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}\PY{p}{,} \PY{n}{labels}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Moving forward}
+            \PY{n}{outputs} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{images}\PY{p}{)}
+            \PY{n}{outputs} \PY{o}{=} \PY{n}{outputs}\PY{o}{.}\PY{n}{logits} \PY{k}{if} \PY{n+nb}{hasattr}\PY{p}{(}\PY{n}{outputs}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{logits}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{else} \PY{n}{outputs}
+
+            \PY{n}{loss} \PY{o}{=} \PY{n}{criterion}\PY{p}{(}\PY{n}{outputs}\PY{p}{,} \PY{n}{labels}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Tracking loss and accuracy}
+            \PY{n}{val\PYZus{}loss} \PY{o}{+}\PY{o}{=} \PY{n}{loss}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)} \PY{o}{*} \PY{n}{images}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+            \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{preds} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{outputs}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+            \PY{n}{val\PYZus{}correct} \PY{o}{+}\PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{preds} \PY{o}{==} \PY{n}{labels}\PY{o}{.}\PY{n}{data}\PY{p}{)}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}
+            \PY{n}{val\PYZus{}total} \PY{o}{+}\PY{o}{=} \PY{n}{labels}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+
+            \PY{n}{all\PYZus{}labels}\PY{o}{.}\PY{n}{extend}\PY{p}{(}\PY{n}{labels}\PY{o}{.}\PY{n}{cpu}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{numpy}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+            \PY{n}{all\PYZus{}preds}\PY{o}{.}\PY{n}{extend}\PY{p}{(}\PY{n}{preds}\PY{o}{.}\PY{n}{cpu}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{numpy}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Calculates average loss and accuracy}
+    \PY{n}{val\PYZus{}loss} \PY{o}{=} \PY{n}{val\PYZus{}loss} \PY{o}{/} \PY{n}{val\PYZus{}total}
+    \PY{n}{val\PYZus{}accuracy} \PY{o}{=} \PY{n}{val\PYZus{}correct} \PY{o}{/} \PY{n}{val\PYZus{}total}
+
+    \PY{k}{return} \PY{n}{val\PYZus{}loss}\PY{p}{,} \PY{n}{val\PYZus{}accuracy}\PY{p}{,} \PY{n}{all\PYZus{}labels}\PY{p}{,} \PY{n}{all\PYZus{}preds}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{train\PYZus{}model}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{model\PYZus{}name}\PY{p}{,} \PY{n}{criterion}\PY{p}{,} \PY{n}{optimizer}\PY{p}{,} \PY{n}{train\PYZus{}loader}\PY{p}{,} \PY{n}{val\PYZus{}loader}\PY{p}{,} \PY{n}{num\PYZus{}epochs}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{,} \PY{n}{accumulation\PYZus{}steps}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{,} \PY{n}{patience}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{:}
+
+    \PY{n}{device} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{device}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cuda}\PY{l+s+s1}{\PYZsq{}} \PY{k}{if} \PY{n}{torch}\PY{o}{.}\PY{n}{cuda}\PY{o}{.}\PY{n}{is\PYZus{}available}\PY{p}{(}\PY{p}{)} \PY{k}{else} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cpu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{model} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Moves the model to the GPU or CPU}
+
+    \PY{c+c1}{\PYZsh{} Directory for saving model\PYZhy{}related files}
+    \PY{n}{model\PYZus{}dir} \PY{o}{=} \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/content/drive/MyDrive/deepfake\PYZus{}dataset/models/}\PY{l+s+si}{\PYZob{}}\PY{n}{model\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}
+
+    \PY{c+c1}{\PYZsh{} Check if the model directory already exists}
+    \PY{k}{if} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{exists}\PY{p}{(}\PY{n}{model\PYZus{}dir}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Model }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{model\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{ already exists in }\PY{l+s+si}{\PYZob{}}\PY{n}{model\PYZus{}dir}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{. Training skipped.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{k}{return} \PY{k+kc}{None}  \PY{c+c1}{\PYZsh{} Exit the function without training}
+
+    \PY{c+c1}{\PYZsh{} Create the directory for the model if it does not exist}
+    \PY{n}{os}\PY{o}{.}\PY{n}{makedirs}\PY{p}{(}\PY{n}{model\PYZus{}dir}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Structure of results for the model}
+    \PY{n}{model\PYZus{}results} \PY{o}{=} \PY{p}{\PYZob{}}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{epoch\PYZus{}results}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}\PY{p}{]}\PY{p}{,}  \PY{c+c1}{\PYZsh{} Results for each epoch}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{confusion\PYZus{}matrix}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{k+kc}{None}  \PY{c+c1}{\PYZsh{} Confusion matrix}
+    \PY{p}{\PYZcb{}}
+
+    \PY{n}{best\PYZus{}val\PYZus{}loss} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Initialise best validation loss as infinite}
+    \PY{n}{epochs\PYZus{}since\PYZus{}improvement} \PY{o}{=} \PY{l+m+mi}{0}  \PY{c+c1}{\PYZsh{} Count the number of epochs without improvement}
+
+    \PY{c+c1}{\PYZsh{} Initialise global progress bar}
+    \PY{n}{progress\PYZus{}bar} \PY{o}{=} \PY{n}{tqdm}\PY{p}{(}
+        \PY{n}{total}\PY{o}{=}\PY{n}{num\PYZus{}epochs}\PY{p}{,}
+        \PY{n}{desc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Training Progress}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+        \PY{n}{ncols}\PY{o}{=}\PY{l+m+mi}{700}\PY{p}{,}
+        \PY{n}{leave}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+        \PY{n}{bar\PYZus{}format}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}desc\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}percentage:3.0f\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{|}\PY{l+s+si}{\PYZob{}bar\PYZcb{}}\PY{l+s+s2}{| }\PY{l+s+si}{\PYZob{}n\PYZus{}fmt\PYZcb{}}\PY{l+s+s2}{/}\PY{l+s+si}{\PYZob{}total\PYZus{}fmt\PYZcb{}}\PY{l+s+s2}{ epochs}\PY{l+s+s2}{\PYZdq{}}
+    \PY{p}{)}
+
+    \PY{k}{for} \PY{n}{epoch} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}epochs}\PY{p}{)}\PY{p}{:}
+
+        \PY{c+c1}{\PYZsh{} Training phase}
+        \PY{n}{train\PYZus{}loss}\PY{p}{,} \PY{n}{train\PYZus{}acc} \PY{o}{=} \PY{n}{train\PYZus{}one\PYZus{}epoch}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{train\PYZus{}loader}\PY{p}{,} \PY{n}{criterion}\PY{p}{,} \PY{n}{optimizer}\PY{p}{,} \PY{n}{device}\PY{p}{,} \PY{n}{accumulation\PYZus{}steps}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Validation phase}
+        \PY{n}{val\PYZus{}loss}\PY{p}{,} \PY{n}{val\PYZus{}acc}\PY{p}{,} \PY{n}{all\PYZus{}labels}\PY{p}{,} \PY{n}{all\PYZus{}preds} \PY{o}{=} \PY{n}{validate\PYZus{}one\PYZus{}epoch}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{val\PYZus{}loader}\PY{p}{,} \PY{n}{criterion}\PY{p}{,} \PY{n}{device}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Confusion matrix calculation and metrics and add it to the list}
+        \PY{n}{precision} \PY{o}{=} \PY{n}{precision\PYZus{}score}\PY{p}{(}\PY{n}{all\PYZus{}labels}\PY{p}{,} \PY{n}{all\PYZus{}preds}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{recall} \PY{o}{=} \PY{n}{recall\PYZus{}score}\PY{p}{(}\PY{n}{all\PYZus{}labels}\PY{p}{,} \PY{n}{all\PYZus{}preds}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{f1} \PY{o}{=} \PY{n}{f1\PYZus{}score}\PY{p}{(}\PY{n}{all\PYZus{}labels}\PY{p}{,} \PY{n}{all\PYZus{}preds}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{cm} \PY{o}{=} \PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{all\PYZus{}labels}\PY{p}{,} \PY{n}{all\PYZus{}preds}\PY{p}{)}
+
+        \PY{n}{model\PYZus{}results}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{epoch\PYZus{}results}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{\PYZob{}}
+            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{epoch} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,}
+            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Train Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n+nb}{round}\PY{p}{(}\PY{n}{train\PYZus{}loss}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,}
+            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Train Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n+nb}{round}\PY{p}{(}\PY{n}{train\PYZus{}acc}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,}
+            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Validation Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n+nb}{round}\PY{p}{(}\PY{n}{val\PYZus{}loss}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,}
+            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Validation Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n+nb}{round}\PY{p}{(}\PY{n}{val\PYZus{}acc}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,}
+            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Precision}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n+nb}{round}\PY{p}{(}\PY{n}{precision}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,}
+            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Recall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n+nb}{round}\PY{p}{(}\PY{n}{recall}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,}
+            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F1 Score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n+nb}{round}\PY{p}{(}\PY{n}{f1}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}
+        \PY{p}{\PYZcb{}}\PY{p}{)}
+        \PY{n}{model\PYZus{}results}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{confusion\PYZus{}matrix}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{cm}
+
+        \PY{n}{scheduler}\PY{o}{.}\PY{n}{step}\PY{p}{(}\PY{n}{val\PYZus{}loss}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Check if the validation loss has improved}
+        \PY{k}{if} \PY{n}{val\PYZus{}loss} \PY{o}{\PYZlt{}} \PY{n}{best\PYZus{}val\PYZus{}loss}\PY{p}{:}
+            \PY{n}{best\PYZus{}val\PYZus{}loss} \PY{o}{=} \PY{n}{val\PYZus{}loss}  \PY{c+c1}{\PYZsh{} Update best validation loss}
+            \PY{n}{epochs\PYZus{}since\PYZus{}improvement} \PY{o}{=} \PY{l+m+mi}{0}  \PY{c+c1}{\PYZsh{} Resets the epoch counter without improvement}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{epochs\PYZus{}since\PYZus{}improvement} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+
+        \PY{c+c1}{\PYZsh{} Update progress bar}
+        \PY{n}{progress\PYZus{}bar}\PY{o}{.}\PY{n}{update}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} If there is no improvement for \PYZsq{}patience\PYZsq{} epochs, stop training}
+        \PY{k}{if} \PY{n}{epochs\PYZus{}since\PYZus{}improvement} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{patience}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Early stopping: No improvement in validation loss.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{k}{break}
+
+        \PY{c+c1}{\PYZsh{} Release the GPU memory at the end of each era}
+        \PY{n}{torch}\PY{o}{.}\PY{n}{cuda}\PY{o}{.}\PY{n}{empty\PYZus{}cache}\PY{p}{(}\PY{p}{)}
+    \PY{n}{progress\PYZus{}bar}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} After completing the training, move the model back to the CPU}
+    \PY{n}{model} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cpu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Saves the results in a CSV file in the model folder}
+    \PY{n}{results\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{model\PYZus{}results}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{epoch\PYZus{}results}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+    \PY{n}{results\PYZus{}df}\PY{o}{.}\PY{n}{to\PYZus{}csv}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{model\PYZus{}dir}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{/}\PY{l+s+si}{\PYZob{}}\PY{n}{model\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}results.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Training results for }\PY{l+s+si}{\PYZob{}}\PY{n}{model\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ saved as }\PY{l+s+si}{\PYZob{}}\PY{n}{model\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZus{}results.csv}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Save the confusion matrix in a CSV file in the model folder}
+    \PY{k}{if} \PY{n}{model\PYZus{}results}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{confusion\PYZus{}matrix}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{:}
+        \PY{n}{cm\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{model\PYZus{}results}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{confusion\PYZus{}matrix}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{True Negative}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{True Positive}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Predicted Negative}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Predicted Positive}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+        \PY{n}{cm\PYZus{}df}\PY{o}{.}\PY{n}{to\PYZus{}csv}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{model\PYZus{}dir}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{/}\PY{l+s+si}{\PYZob{}}\PY{n}{model\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}confusion\PYZus{}matrix.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Confusion Matrix for }\PY{l+s+si}{\PYZob{}}\PY{n}{model\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ saved as }\PY{l+s+si}{\PYZob{}}\PY{n}{model\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZus{}confusion\PYZus{}matrix.csv}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} save the model weights}
+    \PY{n}{torch}\PY{o}{.}\PY{n}{save}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{state\PYZus{}dict}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{model\PYZus{}dir}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{/}\PY{l+s+si}{\PYZob{}}\PY{n}{model\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}weights.pth}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Model weights for }\PY{l+s+si}{\PYZob{}}\PY{n}{model\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ saved as }\PY{l+s+si}{\PYZob{}}\PY{n}{model\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZus{}weights.pth}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{model\PYZus{}results}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{Performance}\label{performance}
+
+is a function that take the results of a model saved on drive and plot
+the confusion matrix, the results of the last epoch and (train vs
+validation) loss and accuracy, among all epoch
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{performance}\PY{p}{(}\PY{n}{nome\PYZus{}modello}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Percorso per i file dei dati}
+    \PY{n}{cm\PYZus{}file} \PY{o}{=} \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/content/drive/MyDrive/deepfake\PYZus{}dataset/models/}\PY{l+s+si}{\PYZob{}}\PY{n}{nome\PYZus{}modello}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{/}\PY{l+s+si}{\PYZob{}}\PY{n}{nome\PYZus{}modello}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}confusion\PYZus{}matrix.csv}\PY{l+s+s1}{\PYZsq{}}
+    \PY{n}{res\PYZus{}file} \PY{o}{=} \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/content/drive/MyDrive/deepfake\PYZus{}dataset/models/}\PY{l+s+si}{\PYZob{}}\PY{n}{nome\PYZus{}modello}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{/}\PY{l+s+si}{\PYZob{}}\PY{n}{nome\PYZus{}modello}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}results.csv}\PY{l+s+s1}{\PYZsq{}}
+
+    \PY{c+c1}{\PYZsh{} Carica i dati}
+    \PY{n}{cm\PYZus{}resnet} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{cm\PYZus{}file}\PY{p}{)}
+    \PY{n}{cm\PYZus{}resnet} \PY{o}{=} \PY{n}{cm\PYZus{}resnet}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}  \PY{c+c1}{\PYZsh{} Rimuovi la prima colonna (indici)}
+
+    \PY{n}{res\PYZus{}resnet} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{res\PYZus{}file}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} Ottieni l\PYZsq{}ultima riga come dizionario}
+    \PY{n}{last\PYZus{}row} \PY{o}{=} \PY{n}{res\PYZus{}resnet}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{to\PYZus{}dict}\PY{p}{(}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Converti i risultati in formato tabellare}
+    \PY{n}{table\PYZus{}data} \PY{o}{=} \PY{p}{[}\PY{p}{(}\PY{n}{key}\PY{p}{,} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{value}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}} \PY{k}{if} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{value}\PY{p}{,} \PY{n+nb}{float}\PY{p}{)} \PY{k}{else} \PY{n}{value}\PY{p}{)} \PY{k}{for} \PY{n}{key}\PY{p}{,} \PY{n}{value} \PY{o+ow}{in} \PY{n}{last\PYZus{}row}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+    \PY{n}{table\PYZus{}text} \PY{o}{=} \PY{n}{tabulate}\PY{p}{(}\PY{n}{table\PYZus{}data}\PY{p}{,} \PY{n}{headers}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Metric}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{tablefmt}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{grid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Prima figura (Confusion Matrix + Metrics)}
+    \PY{n}{fig1}\PY{p}{,} \PY{n}{axes1} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mf}{9.3255}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,} \PY{n}{gridspec\PYZus{}kw}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{width\PYZus{}ratios}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{p}{\PYZcb{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Confusion Matrix}
+    \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{cm\PYZus{}resnet}\PY{p}{,} \PY{n}{annot}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{fmt}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{d}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{YlGnBu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{cbar}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,}
+                \PY{n}{xticklabels}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Predicted Real}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Predicted Fake}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                \PY{n}{yticklabels}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{True Real}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{True Fake}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{axes1}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                \PY{n}{linewidths}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{linecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{black}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{square}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+    \PY{n}{axes1}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Confusion Matrix}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Tabella con le metriche}
+    \PY{n}{axes1}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Disabilita gli assi}
+    \PY{n}{axes1}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{text}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{table\PYZus{}text}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{fontfamily}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{monospace}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ha}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{left}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{va}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{center}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes1}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{From Last Epoch:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{subplots\PYZus{}adjust}\PY{p}{(}\PY{n}{wspace}\PY{o}{=}\PY{l+m+mf}{0.6}\PY{p}{,} \PY{n}{left}\PY{o}{=}\PY{l+m+mf}{0.1}\PY{p}{,} \PY{n}{right}\PY{o}{=}\PY{l+m+mf}{0.9}\PY{p}{,} \PY{n}{top}\PY{o}{=}\PY{l+m+mf}{0.8}\PY{p}{,} \PY{n}{bottom}\PY{o}{=}\PY{l+m+mf}{0.2}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Più spazio tra i subplot e margini}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Seconda figura (Train Loss vs Validation Loss)}
+    \PY{n}{fig2}\PY{p}{,} \PY{n}{axes2} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Un solo plot per Train/Validation Loss}
+    \PY{n}{axes2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{res\PYZus{}resnet}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{res\PYZus{}resnet}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Train Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Train Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{res\PYZus{}resnet}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{res\PYZus{}resnet}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Validation Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Validation Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{orange}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes2}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Train vs Validation Loss}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{axes2}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Epoch}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{axes2}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Loss}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{axes2}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+    \PY{n}{axes2}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.6}\PY{p}{)}
+    \PY{n}{axes2}\PY{o}{.}\PY{n}{set\PYZus{}xticks}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{res\PYZus{}resnet}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Terza figura (Train Accuracy vs Validation Accuracy)}
+    \PY{n}{fig3}\PY{p}{,} \PY{n}{axes3} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Un solo plot per Train/Validation Accuracy}
+    \PY{n}{axes3}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{res\PYZus{}resnet}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{res\PYZus{}resnet}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Train Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Train Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{green}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes3}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{res\PYZus{}resnet}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{res\PYZus{}resnet}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Validation Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Validation Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes3}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Train vs Validation Accuracy}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{axes3}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Epoch}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{axes3}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Accuracy}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{axes3}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+    \PY{n}{axes3}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.6}\PY{p}{)}
+    \PY{n}{axes3}\PY{o}{.}\PY{n}{set\PYZus{}xticks}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{res\PYZus{}resnet}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{Recap the Results}\label{recap-the-results}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{recap}\PY{p}{(}\PY{n}{model\PYZus{}names}\PY{p}{)}\PY{p}{:}
+    
+    \PY{n}{models\PYZus{}dir} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/content/drive/MyDrive/deepfake\PYZus{}dataset/models}\PY{l+s+s1}{\PYZsq{}}
+    \PY{n}{data} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    
+    \PY{k}{for} \PY{n}{model} \PY{o+ow}{in} \PY{n}{model\PYZus{}names}\PY{p}{:}
+        
+        \PY{n}{results\PYZus{}file} \PY{o}{=} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{models\PYZus{}dir}\PY{p}{,} \PY{n}{model}\PY{p}{,} \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{model}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}results.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{k}{if} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{exists}\PY{p}{(}\PY{n}{results\PYZus{}file}\PY{p}{)}\PY{p}{:}
+            \PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{results\PYZus{}file}\PY{p}{)}
+
+            \PY{k}{if} \PY{o+ow}{not} \PY{n}{df}\PY{o}{.}\PY{n}{empty}\PY{p}{:}
+                \PY{n}{last\PYZus{}row} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+
+                \PY{n}{t\PYZus{}loss} \PY{o}{=} \PY{n}{last\PYZus{}row}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Train Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{k+kc}{None}\PY{p}{)}
+                \PY{n}{t\PYZus{}acc} \PY{o}{=} \PY{n}{last\PYZus{}row}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Train Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{k+kc}{None}\PY{p}{)}
+                \PY{n}{v\PYZus{}loss} \PY{o}{=} \PY{n}{last\PYZus{}row}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Validation Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{k+kc}{None}\PY{p}{)}
+                \PY{n}{v\PYZus{}acc} \PY{o}{=} \PY{n}{last\PYZus{}row}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Validation Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{k+kc}{None}\PY{p}{)}
+                \PY{n}{precision} \PY{o}{=} \PY{n}{last\PYZus{}row}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Precision}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{k+kc}{None}\PY{p}{)}
+                \PY{n}{recall} \PY{o}{=} \PY{n}{last\PYZus{}row}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Recall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{k+kc}{None}\PY{p}{)}
+                \PY{n}{f1} \PY{o}{=} \PY{n}{last\PYZus{}row}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F1 Score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{k+kc}{None}\PY{p}{)}
+
+                \PY{n}{data}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{[}\PY{n}{model}\PY{p}{,} \PY{n}{t\PYZus{}loss}\PY{p}{,} \PY{n}{t\PYZus{}acc}\PY{p}{,} \PY{n}{v\PYZus{}loss}\PY{p}{,} \PY{n}{v\PYZus{}acc}\PY{p}{,} \PY{n}{precision}\PY{p}{,} \PY{n}{recall}\PY{p}{,} \PY{n}{f1}\PY{p}{]}\PY{p}{)}
+            \PY{k}{else}\PY{p}{:}
+                \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Il file }\PY{l+s+si}{\PYZob{}}\PY{n}{results\PYZus{}file}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ è vuoto.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Il file }\PY{l+s+si}{\PYZob{}}\PY{n}{results\PYZus{}file}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ non esiste.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Model}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Train Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Train Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Validation Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Validation Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Precision}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Recall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F1 Score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+    \PY{n}{df\PYZus{}summary} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{n}{columns}\PY{p}{)}
+
+    \PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mf}{1.7}\PY{p}{)}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{n}{table} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{table}\PY{p}{(}\PY{n}{cellText}\PY{o}{=}\PY{n}{df\PYZus{}summary}\PY{o}{.}\PY{n}{values}\PY{p}{,} \PY{n}{colLabels}\PY{o}{=}\PY{n}{df\PYZus{}summary}\PY{o}{.}\PY{n}{columns}\PY{p}{,} \PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{center}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{cellLoc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{center}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{table}\PY{o}{.}\PY{n}{auto\PYZus{}set\PYZus{}font\PYZus{}size}\PY{p}{(}\PY{k+kc}{False}\PY{p}{)}
+    \PY{n}{table}\PY{o}{.}\PY{n}{set\PYZus{}fontsize}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}
+    \PY{n}{table}\PY{o}{.}\PY{n}{auto\PYZus{}set\PYZus{}column\PYZus{}width}\PY{p}{(}\PY{n}{col}\PY{o}{=}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{columns}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Adatta larghezza colonne automaticamente}
+
+    \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \section{Libraries}\label{libraries}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{PIL} \PY{k+kn}{import} \PY{n}{Image}
+\PY{k+kn}{import} \PY{n+nn}{os}
+\PY{k+kn}{import} \PY{n+nn}{cv2}
+\PY{k+kn}{import} \PY{n+nn}{zipfile}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{from} \PY{n+nn}{collections} \PY{k+kn}{import} \PY{n}{Counter}
+\PY{k+kn}{from} \PY{n+nn}{IPython}\PY{n+nn}{.}\PY{n+nn}{display} \PY{k+kn}{import} \PY{n}{HTML}\PY{p}{,} \PY{n}{display}
+
+\PY{k+kn}{import} \PY{n+nn}{torch}
+\PY{k+kn}{from} \PY{n+nn}{torch}\PY{n+nn}{.}\PY{n+nn}{utils}\PY{n+nn}{.}\PY{n+nn}{data} \PY{k+kn}{import} \PY{n}{DataLoader}\PY{p}{,} \PY{n}{random\PYZus{}split}
+\PY{k+kn}{from} \PY{n+nn}{torchvision} \PY{k+kn}{import} \PY{n}{datasets}\PY{p}{,} \PY{n}{transforms}\PY{p}{,} \PY{n}{models}
+\PY{k+kn}{from} \PY{n+nn}{torchvision}\PY{n+nn}{.}\PY{n+nn}{models} \PY{k+kn}{import} \PY{n}{vit\PYZus{}b\PYZus{}16}\PY{p}{,} \PY{n}{resnet18}\PY{p}{,} \PY{n}{ResNet18\PYZus{}Weights}\PY{p}{,}\PY{n}{efficientnet\PYZus{}b0}\PY{p}{,} \PY{n}{EfficientNet\PYZus{}B0\PYZus{}Weights}\PY{p}{,} \PY{n}{densenet121}\PY{p}{,} \PY{n}{DenseNet121\PYZus{}Weights}
+\PY{k+kn}{import} \PY{n+nn}{torch}\PY{n+nn}{.}\PY{n+nn}{nn} \PY{k}{as} \PY{n+nn}{nn}
+\PY{k+kn}{import} \PY{n+nn}{torch}\PY{n+nn}{.}\PY{n+nn}{optim} \PY{k}{as} \PY{n+nn}{optim}
+\PY{k+kn}{from} \PY{n+nn}{tqdm}\PY{n+nn}{.}\PY{n+nn}{notebook} \PY{k+kn}{import} \PY{n}{tqdm}
+
+\PY{k+kn}{from} \PY{n+nn}{transformers} \PY{k+kn}{import} \PY{n}{ViTForImageClassification}
+
+\PY{k+kn}{import} \PY{n+nn}{torch}\PY{n+nn}{.}\PY{n+nn}{nn} \PY{k}{as} \PY{n+nn}{nn}
+\PY{k+kn}{import} \PY{n+nn}{torch}\PY{n+nn}{.}\PY{n+nn}{optim} \PY{k}{as} \PY{n+nn}{optim}
+\PY{k+kn}{from} \PY{n+nn}{tqdm}\PY{n+nn}{.}\PY{n+nn}{notebook} \PY{k+kn}{import} \PY{n}{tqdm}
+
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns}
+\PY{k+kn}{import} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{graph\PYZus{}objects} \PY{k}{as} \PY{n+nn}{go}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics} \PY{k+kn}{import} \PY{n}{confusion\PYZus{}matrix}\PY{p}{,} \PY{n}{precision\PYZus{}score}\PY{p}{,} \PY{n}{recall\PYZus{}score}\PY{p}{,}\PY{n}{f1\PYZus{}score}\PY{p}{,} \PY{n}{accuracy\PYZus{}score}
+\PY{k+kn}{import} \PY{n+nn}{glob}
+\PY{k+kn}{from} \PY{n+nn}{tabulate} \PY{k+kn}{import} \PY{n}{tabulate}
+\PY{k+kn}{from} \PY{n+nn}{IPython}\PY{n+nn}{.}\PY{n+nn}{display} \PY{k+kn}{import} \PY{n}{Image} \PY{k}{as} \PY{n}{ipydis}
+\PY{k+kn}{from} \PY{n+nn}{PIL} \PY{k+kn}{import} \PY{n}{Image}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
